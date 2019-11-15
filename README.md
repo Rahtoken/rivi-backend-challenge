@@ -38,9 +38,9 @@ Thus, the request handling and query processing are independent of each other. T
 
 The easiest way to run and test the project is to run `docker-compose up` in the root directory. However, the RabbitMQ server takes time to start. These set of commands ensure proper setup:
 
-1. `docker compose up --rm start_deps`
+1. `docker-compose run --rm start_deps`
 2. Wait for the above command to stop.
-3. `docker compose up`
+3. `docker-compose up`
 
 Use Postman or Curl to test the endpoints.
 Sample commands:
