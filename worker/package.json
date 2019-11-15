@@ -1,0 +1,18 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "description": "The worker which processes query.",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "main": "src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "amqp": "^0.2.7",
+    "amqplib": "^0.5.5",
+    "bluebird": "^3.7.1",
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.7.11",
+    "redis": "^2.8.0"
+  }
+}

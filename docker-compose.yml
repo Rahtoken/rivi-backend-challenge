@@ -1,0 +1,42 @@
+version: "3.0"
+
+services:
+  rabbitmq:
+    image: rabbitmq
+    command: rabbitmq-server
+    ports:
+      - "4369:4369"
+      - "5671:5671"
+      - "5672:5672"
+      - "25672:25672"
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      interval: 5s
+      timeout: 15s
+      retries: 1  
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+  mongo:
+    image: mongo
+    ports: 
+      - 27017:27017
+  backend:
+    build: ./backend-api/
+    restart: on-failure
+    ports:
+      - "3000:3000"
+    depends_on: 
+      - rabbitmq
+      - redis
+      - mongo
+    network_mode: "host"
+  worker:
+    build: ./worker/
+    restart: on-failure
+    depends_on: 
+      - rabbitmq
+      - redis
+      - mongo
+    network_mode: "host"

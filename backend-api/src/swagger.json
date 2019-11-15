@@ -1,0 +1,138 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Rivi Backend Challenge API",
+    "description": "An attempt at solving Rivi's backend engineering internship challenge."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "paths": {
+    "/search": {
+      "post": {
+        "description": "Create a new search query.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["from", "to"],
+                "properties": {
+                  "from": {
+                    "type": "string"
+                  },
+                  "to": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The search query is valid and has been created. Returns a searchId.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "searchId": {
+                      "type": "string",
+                      "description": "The unique identifier of the search query."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request."
+          }
+        }
+      }
+    },
+    "/ping/{searchId}": {
+      "get": {
+        "description": "Check the result of the search query.",
+        "parameters": [
+          {
+            "name": "searchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The result of the search query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "description": "Indicates the status of the query.",
+                      "type": "string",
+                      "enum": ["COMPLETED", "PROCESSING"]
+                    },
+                    "result": {
+                      "description": "The search query's result.",
+                      "type": "object",
+                      "properties": {
+                        "searchId": {
+                          "type": "string",
+                          "description": "The identifier of the search query.",
+                          "example": "e237400b9631fd2c8e4b394b1b580e1f94bdac9b"
+                        },
+                        "from": {
+                          "type": "string",
+                          "example": "DELHI"
+                        },
+                        "to": {
+                          "type": "string",
+                          "example": "HYDERABAD"
+                        },
+                        "data": {
+                          "type": "object",
+                          "description": "The data of the search query.",
+                          "example": "Example data"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "The query is still processing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Indicates the status of the query.",
+                      "enum": ["PROCESSING", "COMPLETED"]
+                    },
+                    "result": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
