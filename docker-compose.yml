@@ -5,6 +5,8 @@ services:
     image: dadarek/wait-for-dependencies
     depends_on: 
       - rabbitmq
+      - mongo
+      - redis
     command: rabbitmq:5672
   rabbitmq:
     image: rabbitmq:management
