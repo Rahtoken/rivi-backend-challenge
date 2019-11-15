@@ -13,7 +13,7 @@ I identified this as a pattern for asynchronous messaging and went ahead with a 
 
 The backend service takes the user's search request and publishes it to a work queue, this allows the processing to be independent of the request handling.
 
-Another service, the worker service, runs parallely and monitors the queue for any work items. If it finds any work items, it asynchronously processes them.
+Another service, the worker service, runs parallelly and monitors the queue for any work items. If it finds any work items, it asynchronously processes them.
 
 Thus, the request handling and query processing are independent of each other. This approach also allows for scaling of the query processing by adding more worker instances.
 
@@ -36,11 +36,15 @@ Thus, the request handling and query processing are independent of each other. T
 
 ## Running
 
-The easiest way to run and test the project is to run `docker-compose up` in the root directory.
+The easiest way to run and test the project is to run `docker-compose up` in the root directory. However, the RabbitMQ server takes time to start. These set of commands ensure proper setup:
+
+1. `docker compose up --rm start_deps`
+2. Wait for the above command to stop.
+3. `docker compose up`
 
 Use Postman or Curl to test the endpoints.
 Sample commands:
 
-1. `curl -H "Content-Type: application/json" --request POST --data '{"from": "DELHI", "to": "HYD"}' localhost:3000/api/search`
+1. `curl -H "Content-Type: application/json" --request POST --data '{"from": "DELHI", "to": "HYD"}' localhost:3000/api/search` (on Linux systems).
 2. Copy the searchId from the above request.
 3. `curl localhost:3000/api/ping/{searchId}`
