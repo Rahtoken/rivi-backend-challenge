@@ -21,11 +21,12 @@ const hashSearchQuery = searchQuery => {
 };
 
 router.post("/search", (req, res) => {
+  console.log(`${req.method} ${req.path}`);
+  
   let searchQuery = {
     from: req.body.from,
     to: req.body.to
   };
-
   if (!searchQuery.from || !searchQuery.to) {
     // Invalid request.
     res.setHeader("Status", 400);
@@ -69,8 +70,9 @@ router.post("/search", (req, res) => {
 });
 
 router.get("/ping/:query", async (req, res, next) => {
+  console.log(`${req.method} ${req.path}`);
+  
   let query = req.params.query;
-
   // Check the status of the search.
   let searchStatus = await req.redisClient.getAsync(query);
   let response = {
