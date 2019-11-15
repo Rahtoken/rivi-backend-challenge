@@ -42,7 +42,7 @@ The easiest way to run and test the project is to run `docker-compose up` in the
 2. Wait for the above command to stop.
 3. `docker-compose up`
 
-Use Postman or Curl to test the endpoints.
+Ensure that there are no existing services running on the ports (27017, 6379 5672, 3000, 15672). Use Postman or Curl to test the endpoints.
 Sample commands:
 
 1. `curl -H "Content-Type: application/json" --request POST --data '{"from": "DELHI", "to": "HYD"}' localhost:3000/api/search` (on Linux systems).
