@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 
 const SearchResult = require("./models/searchResult");
 const queueName = process.env.QUEUE_NAME;
-
+let redisClient;
 redisClient = redis.createClient(process.env.REDIS_URL);
 
 mongoose.connect(process.env.DB_URL, { useNewUrlParser: true });

@@ -1,19 +1,21 @@
 version: "3.0"
 
 services:
+  start_deps:
+    image: dadarek/wait-for-dependencies
+    depends_on: 
+      - rabbitmq
+    command: rabbitmq:5672
   rabbitmq:
-    image: rabbitmq
-    command: rabbitmq-server
+    image: rabbitmq:management
     ports:
-      - "4369:4369"
-      - "5671:5671"
       - "5672:5672"
-      - "25672:25672"
+      - "15672:15672"
     healthcheck:
-      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
-      interval: 5s
-      timeout: 15s
-      retries: 1  
+      test: [ "CMD", "curl", "-f", "localhost", "5672" ]
+      interval: 10s
+      timeout: 30s
+      retries: 3  
   redis:
     image: redis
     ports:
@@ -23,7 +25,7 @@ services:
     ports: 
       - 27017:27017
   backend:
-    build: ./backend-api/
+    image: rahtoken/rivi:backend
     restart: on-failure
     ports:
       - "3000:3000"
@@ -31,12 +33,12 @@ services:
       - rabbitmq
       - redis
       - mongo
-    network_mode: "host"
+      - start_deps
   worker:
-    build: ./worker/
+    image: rahtoken/rivi:worker
     restart: on-failure
     depends_on: 
       - rabbitmq
       - redis
       - mongo
-    network_mode: "host"
+      - start_deps
