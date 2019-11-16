@@ -48,3 +48,9 @@ Sample commands:
 1. `curl -H "Content-Type: application/json" --request POST --data '{"from": "DELHI", "to": "HYD"}' localhost:3000/api/search` (on Linux systems).
 2. Copy the searchId from the above request.
 3. `curl localhost:3000/api/ping/{searchId}`
+
+## Improvements
+
+Given the scope of the project, there are few improvements which can be made:
+
+- Integrate with an OpenAPI spec to automatically manage error handling.
